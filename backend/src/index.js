@@ -71,13 +71,11 @@ app.use("/api/stats", statRoutes);
 const frontendPath = path.join(process.cwd(), "frontend/dist");
 
 if (process.env.NODE_ENV === "production") {
-	app.use(express.static(frontendPath));
-
-	app.get("*", (req, res) => {
-		res.sendFile(path.join(frontendPath, "index.html"));
-	});
+  app.use(express.static(frontendPath));
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
+  });
 }
-
 app.use((err, req, res, next) => {
 	res.status(500).json({ message: process.env.NODE_ENV === "production" ? "Internal server error" : err.message });
 });
